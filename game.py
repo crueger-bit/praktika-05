@@ -81,4 +81,21 @@ hard_levels = [
     [(150, 250), (220, 450), (290, 200), (360, 450), (430, 200), (500, 450), (570, 200), (640, 450), (710, 250)]
 ]
 
+def show_end_screen(text):
+    canvas.pack_forget()
+    hide_game_menu_button()
+    prev_btn.place_forget()
+    next_btn.place_forget()
+    difficulty_btn.place_forget()
+    end_label.config(text=text)
+    end_frame.place(relx=0.5, rely=0.5, anchor="center")
 
+
+def start_game():
+    menu_frame.place_forget()
+    level_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+
+def show_rules():
+    menu_frame.place_forget()
+    rules_frame.place(relx=0.5, rely=0.5, anchor="center")
