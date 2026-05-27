@@ -17,7 +17,6 @@ back_color = "#AAAAAA"
 current_difficulty = None
 current_level = 1
 
-
 def dist(px, py, x1, y1, x2, y2):
     A = px - x1
     B = py - y1
@@ -62,7 +61,6 @@ def center_path(path):
 
     return [(x + dx, y + dy) for x, y in path]
 
-
 easy_levels = [
     [(100, 300), (700, 300)],
     [(400, 100), (400, 500)],
@@ -81,7 +79,6 @@ hard_levels = [
     [(150, 250), (220, 450), (290, 200), (360, 450), (430, 200), (500, 450), (570, 200), (640, 450), (710, 250)]
 ]
 
-
 def show_end_screen(text):
     canvas.pack_forget()
     hide_game_menu_button()
@@ -91,13 +88,39 @@ def show_end_screen(text):
     end_label.config(text=text)
     end_frame.place(relx=0.5, rely=0.5, anchor="center")
 
-
 def start_game():
     menu_frame.place_forget()
     level_frame.place(relx=0.5, rely=0.5, anchor="center")
-
 
 def show_rules():
     menu_frame.place_forget()
     rules_frame.place(relx=0.5, rely=0.5, anchor="center")
 
+def back_to_menu(frame):
+    frame.place_forget()
+    canvas.pack_forget()
+    canvas.delete("all")
+    levels_select_frame.place_forget()
+    level_frame.place_forget()
+    end_frame.place_forget()
+
+    prev_btn.place_forget()
+    next_btn.place_forget()
+    difficulty_btn.place_forget()
+
+    menu_frame.place(relx=0.5, rely=0.5, anchor="center")
+    hide_game_menu_button()
+
+
+def back_to_difficulty():
+    levels_select_frame.place_forget()
+    level_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+
+def back_to_difficulty_from_game():
+    canvas.pack_forget()
+    hide_game_menu_button()
+    prev_btn.place_forget()
+    next_btn.place_forget()
+    difficulty_btn.place_forget()
+    level_frame.place(relx=0.5, rely=0.5, anchor="center")
