@@ -124,3 +124,51 @@ def back_to_difficulty_from_game():
     next_btn.place_forget()
     difficulty_btn.place_forget()
     level_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+
+def update_level_buttons():
+    if current_level == 1:
+        prev_btn.place_forget()
+    else:
+        prev_btn.place(x=10, y=60)
+
+    if current_level == 3:
+        next_btn.place_forget()
+    else:
+        next_btn.place(x=160, y=60)
+
+
+def next_level():
+    if current_level < 3:
+        load_level(current_difficulty, current_level + 1)
+
+
+def prev_level():
+    if current_level > 1:
+        load_level(current_difficulty, current_level - 1)
+
+
+def load_level(diff, lvl):
+    global path, current_difficulty, current_level
+
+    current_difficulty = diff
+    current_level = lvl
+
+    levels_select_frame.place_forget()
+    canvas.pack(fill="both", expand=True)
+    canvas.delete("all")
+
+    show_game_menu_button()
+
+    if diff == "easy":
+        path = center_path(easy_levels[lvl - 1])
+    elif diff == "medium":
+        path = center_path(medium_levels[lvl - 1])
+    elif diff == "hard":
+        path = center_path(hard_levels[lvl - 1])
+
+    draw_level()
+    update_level_buttons()
+    difficulty_btn.place(x=320, y=10)
+
+
