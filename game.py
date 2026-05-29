@@ -172,3 +172,120 @@ def load_level(diff, lvl):
     difficulty_btn.place(x=320, y=10)
 
 
+def open_levels(diff):
+    for w in levels_select_frame.winfo_children():
+        w.destroy()
+
+    level_frame.place_forget()
+    levels_select_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    tk.Label(levels_select_frame, text=f"Уровни ({diff})",
+             font=("Segoe UI", 30, "bold"), fg=mint, bg="black").pack(pady=20)
+
+    for i in range(1, 4):
+        tk.Button(levels_select_frame, text=f"Уровень {i}",
+                  command=lambda n=i: load_level(diff, n),
+                  width=25, height=2,
+                  font=("Segoe UI", 16, "bold"),
+                  bg=level_color, fg="black", bd=0).pack(pady=10)
+
+    tk.Button(levels_select_frame, text="Назад",
+              command=back_to_difficulty,
+              width=25, height=2,
+              font=("Segoe UI", 16, "bold"),
+              bg=back_color, fg="black", bd=0).pack(pady=20)
+
+
+def draw_level():
+    canvas.delete("all")
+
+    for i in range(len(path) - 1):
+        canvas.create_line(path[i], path[i + 1], width=24, fill=mint, capstyle="round")
+
+    canvas.create_oval(path[0][0] - 15, path[0][1] - 15,
+                       path[0][0] + 15, path[0][1] + 15,
+                       fill="green", outline="")
+
+    canvas.create_oval(path[-1][0] - 15, path[-1][1] - 15,
+                       path[-1][0] + 15, path[-1][1] + 15,
+                       fill="red", outline="")
+
+    canvas.create_text(canvas.winfo_width() // 2, 40,
+                       text=f"Уровень {current_level} / 3",
+                       fill="white",
+                       font=("Segoe UI", 22, "bold"))
+
+
+def mouse_down(event):
+    global drawing, progress_index
+    if math.dist((event.x, event.y), path[0]) < 25:
+        drawing = True
+        progress_index = 0
+        canvas.old_x = event.x
+        canvas.old_y = event.y
+
+
+def mouse_move(event):
+    global drawing, progress_index, current_level
+
+    if not drawing:
+        return
+
+    inside = False
+    for i in range(len(path) - 1):
+        if dist(event.x, event.y, *path[i], *path[i + 1]) < radius:
+            inside = True
+            progress_index = max(progress_index, i)
+
+    if not inside:
+        drawing = False
+        show_end_screen("Поражение\nВы вышли за дорожку")
+        return
+
+    canvas.create_line(canvas.old_x, canvas.old_y,
+                       event.x, event.y,
+                       width=12, fill=turquoise, capstyle="round")
+
+    canvas.old_x = event.x
+    canvas.old_y = event.y
+
+    if progress_index >= len(path) - 2 and math.dist((event.x, event.y), path[-1]) < 25:
+        drawing = False
+        if current_level < 3:
+            load_level(current_difficulty, current_level + 1)
+        else:
+            show_end_screen("Победа\nВы прошли все уровни!")
+
+
+def mouse_up(event):
+    global drawing
+    if drawing:
+        drawing = False
+        show_end_screen("Поражение\nВы оторвали перо")
+
+
+root = tk.Tk()
+root.title("Обведи, не отрывая пера")
+root.attributes("-fullscreen", True)
+root.configure(bg="black")
+
+canvas = tk.Canvas(root, bg="black", highlightthickness=0)
+canvas.bind("<ButtonPress-1>", mouse_down)
+canvas.bind("<B1-Motion>", mouse_move)
+canvas.bind("<ButtonRelease-1>", mouse_up)
+
+
+def show_game_menu_button():
+    game_menu_button.place(x=10, y=10)
+
+
+def hide_game_menu_button():
+    game_menu_button.place_forget()
+
+
+menu_frame = tk.Frame(root, bg="black")
+menu_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+tk.Label(menu_frame, text="Обведи, не отрывая пера",
+         font=("Segoe UI", 36, "bold"),
+         fg=mint, bg="black").pack(pady=40)
