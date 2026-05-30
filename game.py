@@ -289,3 +289,59 @@ menu_frame.place(relx=0.5, rely=0.5, anchor="center")
 tk.Label(menu_frame, text="Обведи, не отрывая пера",
          font=("Segoe UI", 36, "bold"),
          fg=mint, bg="black").pack(pady=40)
+
+def btn(parent, text, cmd):
+    b = tk.Button(parent, text=text, command=cmd,
+                  width=25, height=2,
+                  font=("Segoe UI", 16, "bold"),
+                  bg=mint, fg="black", bd=0)
+    b.pack(pady=10)
+    return b
+
+
+btn(menu_frame, "Играть", start_game)
+btn(menu_frame, "Правила", show_rules)
+btn(menu_frame, "Выход", root.destroy)
+
+level_frame = tk.Frame(root, bg="black")
+tk.Label(level_frame, text="Сложность",
+         font=("Segoe UI", 30, "bold"),
+         fg=mint, bg="black").pack(pady=30)
+
+tk.Button(level_frame, text="Легкий",
+          command=lambda: open_levels("easy"),
+          bg=easy_color, width=25, height=2,
+          font=("Segoe UI", 16, "bold")).pack(pady=10)
+
+tk.Button(level_frame, text="Средний",
+          command=lambda: open_levels("medium"),
+          bg=medium_color, width=25, height=2,
+          font=("Segoe UI", 16, "bold")).pack(pady=10)
+
+tk.Button(level_frame, text="Сложный",
+          command=lambda: open_levels("hard"),
+          bg=hard_color, width=25, height=2,
+          font=("Segoe UI", 16, "bold")).pack(pady=10)
+
+tk.Button(level_frame, text="Назад",
+          command=lambda: back_to_menu(level_frame),
+          bg=back_color, width=25, height=2,
+          font=("Segoe UI", 16, "bold")).pack(pady=10)
+
+levels_select_frame = tk.Frame(root, bg="black")
+
+game_menu_button = tk.Button(root, text="Меню",
+                             command=lambda: back_to_menu(canvas),
+                             bg=mint, fg="red",
+                             font=("Segoe UI", 14, "bold"))
+
+prev_btn = tk.Button(root, text="Назад", command=prev_level,
+                     bg=back_color, font=("Segoe UI", 12, "bold"))
+
+next_btn = tk.Button(root, text="Вперёд", command=next_level,
+                     bg=back_color, font=("Segoe UI", 12, "bold"))
+
+difficulty_btn = tk.Button(root, text="Сложность",
+                           command=back_to_difficulty_from_game,
+                           bg=level_color, font=("Segoe UI", 12, "bold"))
+
