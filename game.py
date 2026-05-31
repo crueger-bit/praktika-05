@@ -345,3 +345,28 @@ difficulty_btn = tk.Button(root, text="Сложность",
                            command=back_to_difficulty_from_game,
                            bg=level_color, font=("Segoe UI", 12, "bold"))
 
+rules_frame = tk.Frame(root, bg="black")
+tk.Label(rules_frame,
+         text="Начни с зелёной точки\nДойди до красной\nНе выходи за линию\nНе отрывай перо",
+         font=("Segoe UI", 24),
+         fg="white", bg="black").pack(pady=40)
+
+btn(rules_frame, "Назад", lambda: back_to_menu(rules_frame))
+
+end_frame = tk.Frame(root, bg="black")
+
+end_label = tk.Label(end_frame,
+                     text="",
+                     font=("Segoe UI", 40, "bold"),
+                     fg="white",
+                     bg="black")
+end_label.pack(pady=50)
+
+tk.Button(end_frame,
+          text="В меню",
+          command=lambda: back_to_menu(end_frame),
+          width=25, height=2,
+          font=("Segoe UI", 16, "bold"),
+          bg=mint, fg="black").pack(pady=20)
+
+root.mainloop()
